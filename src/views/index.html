@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Electron App</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/custom.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <h1>Miercoles: 09:30 - 11:30</h1>
+        </div>
+        <div class="col-md-4">
+          <h1 style="color:#0f0692"; >HORA</h1>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="container-fluid p-4" >
+      <div class="row" id="products">
+        <!--AQUI COMINEZA LA CARD-->
+        <div class="col-xs-4 p-2">
+          <div class="card text-white bg-warning mb-5" style="max-width: 20rem;">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-2">
+                      <label  class="btn btn-secondary">1</label>
+                  </div>
+                  <div class="col-md-8">
+                    <h5>INGE. WEB. 2798</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">Ing. Montaluisa Pilatag Edgar Fabian</h4>
+                <b>
+                 <p class="card-text" style="color:#fffb00";>H</p>
+                </b>
+              </div>
+              <div class="card-footer">
+                  <button class="btn btn-warning">
+                    ACCION
+                  </button>
+              </div>
+            </div>
+        </div>
+          <!---->
+        <div class="col-xs-4 p-2">
+          <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-2">
+                      <label  class="btn btn-secondary">1</label>
+                  </div>
+                  <div class="col-md-8">
+                    <h5>INGE. WEB. 2798</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">Ing. Montaluisa Pilatag Edgar Fabian</h4>
+                <b>
+                 <p class="card-text" style="color:#fffb00";>H</p>
+                </b>
+              </div>
+              <div class="card-footer">
+                  <button class="btn btn-danger">
+                    ACCION
+                  </button>
+              </div>
+            </div>
+        </div>
+ <!---->
+ <div class="col-xs-4 p-2">
+    <div class="card text-white bg-success mb-5" style="max-width: 20rem;">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-2">
+                <label  class="btn btn-secondary">1</label>
+            </div>
+            <div class="col-md-8">
+              <h5>INGE. WEB. 2798</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Ing. Montaluisa Pilatag Edgar Fabian</h4>
+          <b>
+           <p class="card-text" style="color:#fffb00";>H</p>
+          </b>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-success">
+              ACCION
+            </button>
+        </div>
+      </div>
+  </div>
+  <div class="col-xs-4 p-2">
+      <div class="card  bg-light mb-5" style="max-width: 20rem;">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-2">
+                  <label  class="btn btn-secondary">1</label>
+              </div>
+              <div class="col-md-8">
+                <h5></h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title"></h4>
+          </div>
+          <div class="card-footer">
+              <button class="btn btn-secondary">
+                ACCION
+              </button>
+          </div>
+        </div>
+      </div>        
+      </div>
+    </div>
+
+    <!-- Logic -->
+    <script>
+      const { ipcRenderer } = require('electron');
+      const products = document.querySelector('#products');
+
+      // New Product
+      ipcRenderer.on('product:new', (e, newProduct) => {
+        const newProductTemplate = `
+        <div class="col-xs-4 p-2">
+        <div class="card text-center">
+            <div class="card-header">
+              <h5 class="card-title">${newProduct.name}</h5>
+            </div>
+            <div class="card-body">
+              ${newProduct.description}
+              <hr>
+              ${newProduct.price} $
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-danger btn-sm">
+                DELETE
+              </button>
+            </div>
+        </div>
+        </div>
+      `;
+        products.innerHTML += newProductTemplate;
+        
+        const btns = document.querySelectorAll('.btn.btn-danger');
+        btns.forEach(btn => {
+          btn.addEventListener('click', e => {
+            e.target.parentElement.parentElement.parentElement.remove();
+          });
+        })
+      });
+
+      // Remove All Products
+      ipcRenderer.on('products:remove-all', e => {
+        products.innerHTML = '';
+      });
+
+      // Remove Single Product
+      function removeProduct(e) {
+      }
+    </script>
+  </body>
+</html>
