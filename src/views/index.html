@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/custom.css">
   </head>
-  <body>
+  <body onload="show5()"> 
     <div class="container">
       <div class="row">
         <div class="col-md-8">
           <h1>Miercoles: 09:30 - 11:30</h1>
         </div>
         <div class="col-md-4">
-          <h1 style="color:#0f0692"; >HORA</h1>
+          <h1 id="liveclock" style="color:#0f0692";></h1>
         </div>
       </div>
     </div>
@@ -150,7 +150,6 @@
         </div>
       `;
         products.innerHTML += newProductTemplate;
-        
         const btns = document.querySelectorAll('.btn.btn-danger');
         btns.forEach(btn => {
           btn.addEventListener('click', e => {
@@ -170,3 +169,4 @@
     </script>
   </body>
 </html>
+<script type="text/javascript" src="./js/reloj.js"></script> 
