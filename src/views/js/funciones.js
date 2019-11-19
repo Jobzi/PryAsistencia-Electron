@@ -1,8 +1,10 @@
 const remote = require('electron').remote
 const index = remote.require('./index.js')
 const fecha=new Date();
-const hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
-
+var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
+if(fecha.getHours()<10){
+var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
+}
 function listarControles(horario) {
     //saber hora para el selecet
     if (horario==""){        
@@ -356,6 +358,7 @@ function saberDia(horario){
     document.getElementById("dia").innerHTML = diaTemplate
 }
 function obtenerHoraLaboral(){
+  
     var hora="No es Hora Laboral";
     if(hora_actual.valueOf()>=("06:45:00").valueOf() && hora_actual.valueOf()<("09:15:00").valueOf()){
         hora="07:00:00-09:00:00"
@@ -411,6 +414,7 @@ function menubar(){
       label: '14:00-16:00',
       click() {
         if(hora_actual.valueOf()>="14:00:00"){
+          alert(hora_actual)
           listarControles("14:00:00-16:00:00");
         }else{
           alert("No puede acceder a controles futuros"+hora_actual);
