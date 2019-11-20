@@ -25,18 +25,20 @@ function validarDocente(usuario,contraseña){
     }
     let docente=rows;
     let query2="";
-    if(docente[0].DOC_MIESPE==usuario &&docente[0].DOC_CLAVE==contraseña){
+    if(docente[0].DOC_MIESPE==usuario && docente[0].DOC_CLAVE==contraseña){
       if(info_control.accion=="ENTRAR"){
-        query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora+'" WHERE DOC_CODIGO='+info_control.docente
+        query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora_actual+'" WHERE DOC_CODIGO='+info_control.docente
       }else{
-        query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora+'" WHERE DOC_CODIGO='+info_control.docente
+        query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora_actual+'" WHERE DOC_CODIGO='+info_control.docente
       }
       index.connection.query(query2,function(err,result){
         if (err){
           console.log("error fatal")
           console.log(err)
+          alert(err)
           return
         }
+        
         window.close()
       })
     }else{

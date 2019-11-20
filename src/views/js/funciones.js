@@ -466,7 +466,7 @@ function crearVentanaAutentificar(docente,accion) {
 
 
 function iniciar(){
-    listarControles("");
+    listarControles("07:00:00");
     reloj();
     menubar();
 }
