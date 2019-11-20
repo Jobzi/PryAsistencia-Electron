@@ -1,10 +1,13 @@
 const remote = require('electron').remote
 const index = remote.require('./index.js')
 const fecha=new Date();
+var horario_actual;
 var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 if(fecha.getHours()<10){
-var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
+  var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 }
+
+
 function listarControles(horario) {
     //saber hora para el selecet
     if (horario==""){        
@@ -13,12 +16,13 @@ function listarControles(horario) {
     if(horario!="No es Hora Laboral"){
       dibujarSalas()
     }
+    horario_actual=horario;
     saberDia(horario)
     let hora=horario.split("-",1)
     //
     let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
     console.log(string_fecha)
-    let query = 'select CON_DIA,MAT_ABREVIATURA,MAT_NRC,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_NOMBRE,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="2019-11-22" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
+    let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_NOMBRE,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="2019-11-22" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
     let salas=["SALA 01","SALA 02","SALA 03","SALA 04","SALA 05","SALA 06","COMPUTACIÓN I","COMPUTACIÓN II","REDES DE DATOS"];
     let sala_nombre;
     let ocasional="H";
@@ -29,10 +33,8 @@ function listarControles(horario) {
         if (err){
           console.log("error fatal")
           console.log(err)
-          
           return
         }
-
         controles=rows;
         controles.forEach(control => {
             //Obteniendo el codigo de la sala
@@ -81,7 +83,7 @@ function listarControles(horario) {
                     <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} <a class="card-text" style="color:#fffb00";>${ocasional}</a> </h4>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-${color_tarjeta[indice_colores]}">
+                    <button id=boton${sala_codigo} class="btn btn-${color_tarjeta[indice_colores]}">
                       ${accion_boton[indice_colores]}
                     </button>
                 </div>
@@ -92,6 +94,10 @@ function listarControles(horario) {
                 if(control.LAB_NOMBRE==sala){
                     document.getElementById(sala).innerHTML = controlesTemplate;
                 }
+            })
+            let btn=document.getElementById("boton"+sala_codigo)
+            btn.addEventListener('click', e => {
+              crearVentanaAutentificar(control.DOC_CODIGO, accion_boton[indice_colores])
             })
       })
     })
@@ -414,28 +420,54 @@ function menubar(){
       label: '14:00-16:00',
       click() {
         if(hora_actual.valueOf()>="14:00:00"){
-          alert(hora_actual)
           listarControles("14:00:00-16:00:00");
         }else{
           alert("No puede acceder a controles futuros"+hora_actual);
         }
       }
     },  
+    
   ];
     // Menu
     const mainMenu = index.Menu.buildFromTemplate(templateMenu);
     // Set The Menu to the Main Window
     index.Menu.setApplicationMenu(mainMenu);
     // Menu Template
-
 }
 
+function crearVentanaAutentificar(docente,accion) {
+  var tarjeta={
+    docente: docente,
+    accion: accion,
+    hora_actual: hora_actual
+  };
+  if(accion!="FINALIZADO"){
+    new_auth_window = new index.BrowserWindow({
+      width: 300,
+      height: 240,
+      title: 'Autentificacion'
+    });
+    new_auth_window.setMenu(null);
+    new_auth_window.loadURL(index.url.format({
+      pathname: index.path.join(__dirname, '/autentificacion.html'),
+      protocol: 'file',
+      slashes: true
+    }));
+    new_auth_window.on('closed', () => {
+      listarControles(horario_actual)
+      new_auth_window = null;
+    });
+    new_auth_window.webContents.on('did-finish-load', () => {
+      new_auth_window.webContents.send('tarjeta', tarjeta)
+    })
+  }
+  
+}
 
 
 function iniciar(){
     listarControles("");
     reloj();
     menubar();
-    
 }
 window.onload=iniciar;
