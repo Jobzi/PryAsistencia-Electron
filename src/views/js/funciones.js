@@ -6,8 +6,6 @@ var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 if(fecha.getHours()<10){
   var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 }
-
-
 function listarControles(horario) {
     //saber hora para el selecet
     if (horario==""){        
@@ -29,6 +27,12 @@ function listarControles(horario) {
     let color_tarjeta=["light","warning","danger","success"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
+    //mostrar las salas marcadas
+    salas.forEach(sala=>{
+      mostrarLaboratorios("C-"+sala)
+      
+    })
+    //
     index.connection.query(query,function(err,rows,fields){
         if (err){
           console.log("error fatal")
@@ -96,19 +100,18 @@ function listarControles(horario) {
                 }
             })
             let btn=document.getElementById("boton"+sala_codigo)
-            btn.addEventListener('click', e => {
-              crearVentanaAutentificar(control.DOC_CODIGO, accion_boton[indice_colores])
+            btn.addEventListener('click', e => {  
+              crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
             })
       })
     })
-
     //index.closeConnection()
 }
 
 function dibujarSalas(){
     var salasTemplate =`
     <div class="row" id="salas">    
-        <div class="col-xs-4 p-2" id="SALA 01">
+        <div class="col-xs-4 p-2" id="SALA 01" style="display: none">
             <div class="card  bg-light mb-5" style="max-width: 20rem;" >
               <div class="card-header">
                 <div class="row">
@@ -131,7 +134,7 @@ function dibujarSalas(){
             </div>
           </div>  
         <!---->
-        <div class="col-xs-4 p-2" id="SALA 02">
+        <div class="col-xs-4 p-2" id="SALA 02" style="display: none">
             <div class="card  bg-light mb-5" style="max-width: 20rem;" >
               <div class="card-header">
                 <div class="row">
@@ -154,7 +157,7 @@ function dibujarSalas(){
             </div>
           </div>  
         <!---->
-        <div class="col-xs-4 p-2" id="SALA 03">
+        <div class="col-xs-4 p-2" id="SALA 03" style="display: none">
             <div class="card  bg-light mb-5" style="max-width: 20rem;" >
               <div class="card-header">
                 <div class="row">
@@ -177,7 +180,7 @@ function dibujarSalas(){
             </div>
           </div>  
       <!---->
-        <div class="col-xs-4 p-2" id="SALA 04">
+        <div class="col-xs-4 p-2" id="SALA 04" style="display: none">
           <div class="card  bg-light mb-5" style="max-width: 20rem;" >
             <div class="card-header">
               <div class="row">
@@ -200,7 +203,7 @@ function dibujarSalas(){
           </div>
         </div>    
        <!---->
-       <div class="col-xs-4 p-2" id="SALA 05">
+       <div class="col-xs-4 p-2" id="SALA 05" style="display: none">
           <div class="card  bg-light mb-5" style="max-width: 20rem;" >
             <div class="card-header">
               <div class="row">
@@ -223,7 +226,7 @@ function dibujarSalas(){
           </div>
         </div>    
        <!---->
-       <div class="col-xs-4 p-2" id="SALA 06">
+       <div class="col-xs-4 p-2" id="SALA 06" style="display: none">
           <div class="card  bg-light mb-5" style="max-width: 20rem;" >
             <div class="card-header">
               <div class="row">
@@ -246,7 +249,7 @@ function dibujarSalas(){
           </div>
         </div>    
        <!---->
-       <div class="col-xs-4 p-2" id="REDES DE DATOS">
+       <div class="col-xs-4 p-2" id="REDES DE DATOS" style="display: none">
           <div class="card  bg-light mb-5" style="max-width: 20rem;" >
             <div class="card-header">
               <div class="row">
@@ -269,7 +272,7 @@ function dibujarSalas(){
           </div>
         </div>    
        <!---->
-       <div class="col-xs-4 p-2" id="COMPUTACIÓN I">
+       <div class="col-xs-4 p-2" id="COMPUTACIÓN I" style="display: none">
           <div class="card  bg-light mb-5" style="max-width: 20rem;" >
             <div class="card-header">
               <div class="row">
@@ -292,7 +295,7 @@ function dibujarSalas(){
           </div>
         </div>    
        <!---->
-       <div class="col-xs-4 p-2" id="COMPUTACION II">
+       <div class="col-xs-4 p-2" id="COMPUTACIÓN II" style="display: none">
           <div class="card  bg-light mb-5" style="max-width: 20rem;" >
             <div class="card-header">
               <div class="row">
@@ -424,7 +427,20 @@ function menubar(){
         }else{
           alert("No puede acceder a controles futuros");
         }
+      },
+      label: 'DevTools',
+    submenu: [
+      {
+        label: 'Show/Hide Dev Tools',
+        accelerator: process.platform == 'darwin' ? 'Comand+D' : 'Ctrl+D',
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      },
+      {
+        role: 'reload'
       }
+    ]
     },  
     
   ];
@@ -463,11 +479,17 @@ function crearVentanaAutentificar(docente,accion) {
   }
   
 }
-
+function mostrarLaboratorios(id){
+  if( document.getElementById(id).checked==false)
+    document.getElementById(id.split("C-",2)[1]).style.display = "none"
+  if( document.getElementById(id).checked==true)
+    document.getElementById(id.split("C-",2)[1]).style.display = "block"
+}
 
 function iniciar(){
     listarControles("");
     reloj();
     menubar();
 }
+
 window.onload=iniciar;
