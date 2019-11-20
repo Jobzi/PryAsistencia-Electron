@@ -72,7 +72,7 @@ function listarControles(horario) {
                 <div class="card-header">
                     <div class="row">
                     <div class="col-md-2">
-                        <label  class="btn btn-secondary">${sala_codigo}</label>
+                        <label  class="btn btn-primary">${sala_codigo}</label>
                     </div>
                     <div class="col-md-8">
                         <h5>${control.MAT_ABREVIATURA} </h5>
@@ -83,7 +83,7 @@ function listarControles(horario) {
                     <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} <a class="card-text" style="color:#fffb00";>${ocasional}</a> </h4>
                 </div>
                 <div class="card-footer">
-                    <button id=boton${sala_codigo} class="btn btn-${color_tarjeta[indice_colores]}">
+                    <button id=boton${sala_codigo} class="btn btn-${color_tarjeta[indice_colores]} btn-block">
                       ${accion_boton[indice_colores]}
                     </button>
                 </div>
@@ -113,7 +113,7 @@ function dibujarSalas(){
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-2">
-                      <label  class="btn btn-secondary">S1</label>
+                      <label  class="btn btn-primary">S1</label>
                   </div>
                   <div class="col-md-8">
                     <h5></h5>
@@ -124,7 +124,7 @@ function dibujarSalas(){
                 <h4 class="card-title"></h4>
               </div>
               <div class="card-footer">
-                  <button class="btn btn-secondary">
+                  <button class="btn btn-secondary btn-block">
                     DISPONIBLE
                   </button>
               </div>
@@ -136,7 +136,7 @@ function dibujarSalas(){
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-2">
-                      <label  class="btn btn-secondary">S2</label>
+                      <label  class="btn btn-primary">S2</label>
                   </div>
                   <div class="col-md-8">
                     <h5></h5>
@@ -147,7 +147,7 @@ function dibujarSalas(){
                 <h4 class="card-title"></h4>
               </div>
               <div class="card-footer">
-                  <button class="btn btn-secondary">
+                  <button class="btn btn-secondary btn-block">
                     DISPONIBLE
                   </button>
               </div>
@@ -159,7 +159,7 @@ function dibujarSalas(){
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-2">
-                      <label  class="btn btn-secondary">S3</label>
+                      <label  class="btn btn-primary">S3</label>
                   </div>
                   <div class="col-md-8">
                     <h5></h5>
@@ -170,7 +170,7 @@ function dibujarSalas(){
                 <h4 class="card-title"></h4>
               </div>
               <div class="card-footer">
-                  <button class="btn btn-secondary">
+                  <button class="btn btn-secondary btn-block">
                     DISPONIBLE
                   </button>
               </div>
@@ -182,7 +182,7 @@ function dibujarSalas(){
             <div class="card-header">
               <div class="row">
                 <div class="col-md-2">
-                    <label  class="btn btn-secondary">S4</label>
+                    <label  class="btn btn-primary">S4</label>
                 </div>
                 <div class="col-md-8">
                   <h5></h5>
@@ -193,7 +193,7 @@ function dibujarSalas(){
               <h4 class="card-title"></h4>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary btn-block">
                   DISPONIBLE
                 </button>
             </div>
@@ -205,7 +205,7 @@ function dibujarSalas(){
             <div class="card-header">
               <div class="row">
                 <div class="col-md-2">
-                    <label  class="btn btn-secondary">S5</label>
+                    <label  class="btn btn-primary">S5</label>
                 </div>
                 <div class="col-md-8">
                   <h5></h5>
@@ -216,7 +216,7 @@ function dibujarSalas(){
               <h4 class="card-title"></h4>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary btn-block">
                   DISPONIBLE
                 </button>
             </div>
@@ -228,7 +228,7 @@ function dibujarSalas(){
             <div class="card-header">
               <div class="row">
                 <div class="col-md-2">
-                    <label  class="btn btn-secondary">S6</label>
+                    <label  class="btn btn-primary ">S6</label>
                 </div>
                 <div class="col-md-8">
                   <h5></h5>
@@ -239,7 +239,7 @@ function dibujarSalas(){
               <h4 class="card-title"></h4>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary btn-block">
                   DISPONIBLE
                 </button>
             </div>
@@ -251,7 +251,7 @@ function dibujarSalas(){
             <div class="card-header">
               <div class="row">
                 <div class="col-md-2">
-                    <label  class="btn btn-secondary">RE</label>
+                    <label  class="btn btn-primary">RE</label>
                 </div>
                 <div class="col-md-8">
                   <h5></h5>
@@ -262,7 +262,7 @@ function dibujarSalas(){
               <h4 class="card-title"></h4>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary btn-block">
                   DISPONIBLE
                 </button>
             </div>
@@ -274,7 +274,7 @@ function dibujarSalas(){
             <div class="card-header">
               <div class="row">
                 <div class="col-md-2">
-                    <label  class="btn btn-secondary">C1</label>
+                    <label  class="btn btn-primary">C1</label>
                 </div>
                 <div class="col-md-8">
                   <h5></h5>
@@ -285,7 +285,7 @@ function dibujarSalas(){
               <h4 class="card-title"></h4>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary btn-block">
                   DISPONIBLE
                 </button>
             </div>
@@ -297,7 +297,7 @@ function dibujarSalas(){
             <div class="card-header">
               <div class="row">
                 <div class="col-md-2">
-                    <label  class="btn btn-secondary">C2</label>
+                    <label  class="btn btn-primary">C2</label>
                 </div>
                 <div class="col-md-8">
                   <h5></h5>
@@ -308,7 +308,7 @@ function dibujarSalas(){
               <h4 class="card-title"></h4>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary btn-block">
                   DISPONIBLE
                 </button>
             </div>
@@ -422,7 +422,7 @@ function menubar(){
         if(hora_actual.valueOf()>="14:00:00"){
           listarControles("14:00:00-16:00:00");
         }else{
-          alert("No puede acceder a controles futuros"+hora_actual);
+          alert("No puede acceder a controles futuros");
         }
       }
     },  
@@ -466,7 +466,7 @@ function crearVentanaAutentificar(docente,accion) {
 
 
 function iniciar(){
-    listarControles("07:00:00");
+    listarControles("");
     reloj();
     menubar();
 }
