@@ -1,4 +1,3 @@
-require('electron-reload')(__dirname);
 const { app, BrowserWindow, Menu } = require('electron');
 const mysql = require("mysql");
 const url = require('url');

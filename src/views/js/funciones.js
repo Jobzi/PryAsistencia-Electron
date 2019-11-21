@@ -7,12 +7,16 @@ if(fecha.getHours()<10){
   var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 }
 function listarControles(horario) {
+  let salas=["SALA 01","SALA 02","SALA 03","SALA 04","SALA 05","SALA 06","COMPUTACIÓN I","COMPUTACIÓN II","REDES DE DATOS"];
     //saber hora para el selecet
     if (horario==""){        
         horario=obtenerHoraLaboral();
     }
     if(horario!="No es Hora Laboral"){
       dibujarSalas()
+      salas.forEach(sala=>{
+        mostrarLaboratorios("C-"+sala)
+      })
     }
     horario_actual=horario;
     saberDia(horario)
@@ -21,17 +25,12 @@ function listarControles(horario) {
     let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
     console.log(string_fecha)
     let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_NOMBRE,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
-    let salas=["SALA 01","SALA 02","SALA 03","SALA 04","SALA 05","SALA 06","COMPUTACIÓN I","COMPUTACIÓN II","REDES DE DATOS"];
     let sala_nombre;
     let ocasional="H";
     let color_tarjeta=["light","warning","danger","success"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
     //mostrar las salas marcadas
-    salas.forEach(sala=>{
-      mostrarLaboratorios("C-"+sala)
-      
-    })
     //
     index.connection.query(query,function(err,rows,fields){
         if (err){
