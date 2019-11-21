@@ -1,6 +1,7 @@
 const remote = require('electron').remote
 const index = remote.require('./index.js')
 const { ipcRenderer } = require('electron');
+const mysql = require("mysql");
 var info_control;
 ipcRenderer.on('tarjeta', (event, tarjeta) => {
 info_control=tarjeta;
@@ -15,8 +16,10 @@ form.addEventListener('submit', e => {
 
 function validarDocente(contraseña){
   let query = 'SELECT DOC_CLAVE FROM docente WHERE DOC_CODIGO='+info_control.docente
-  index.conectConnection()
-  index.connection.query(query,function(err,rows,fields){
+  const credenciales=index.bd_connection_info;
+  const connection = mysql.createConnection(credenciales)
+  connection.connect()
+  connection.query(query,function(err,rows,fields){
     if (err){
       console.log("error fatal")
       console.log(err)
@@ -44,5 +47,5 @@ function validarDocente(contraseña){
       alert("Clave incorrectos")
     }
   })
-  index.closeConnection()
+  connection.end()
 }

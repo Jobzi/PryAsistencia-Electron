@@ -1,5 +1,4 @@
 const { app, BrowserWindow, Menu } = require('electron');
-const mysql = require("mysql");
 const url = require('url');
 const path = require('path');
 exports.Menu=Menu;
@@ -8,29 +7,21 @@ exports.url=url;
 exports.path=path;
 var mainWindow;
 
-const connection = mysql.createConnection({
- /* host:"remotemysql.com",
-  port:"3306",
-  user:"V4m8MKkMx1",
-  password:"qSE61lK4af",
-  database:"V4m8MKkMx1",*/
-  host:"10.2.0.3",
-  port:"3306",
-  user:"sg-lab2",
-  password:"sglab2019",
-  database:"sg-lab2",
-}) 
-exports.conectConnection = () =>{
-  connection.connect(function(err){
-    if (err){
-      console.log(err.code)
-    }
-  })
-}
-exports.connection=connection
-exports.closeConnection = () =>{
-  connection.end(function(){})
-}
+const bd_connection_info={
+  /* host:"remotemysql.com",
+   port:"3306",
+   user:"V4m8MKkMx1",
+   password:"qSE61lK4af",
+   database:"V4m8MKkMx1",*/
+   host:"10.2.0.3",
+   port:"3306",
+   user:"sg-lab2",
+   password:"sglab2019",
+   database:"sg-lab2",
+ }
+
+
+exports.bd_connection_info=bd_connection_info
 
 app.on('ready', () => {
 

@@ -1,5 +1,6 @@
 const remote = require('electron').remote
 const index = remote.require('./index.js')
+const mysql = require("mysql");
 const fecha=new Date();
 var horario_actual;
 var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
@@ -30,10 +31,12 @@ function listarControles(horario) {
     let color_tarjeta=["light","danger","warning","success"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
+    const credenciales=index.bd_connection_info;
+    const connection = mysql.createConnection(credenciales)
     //mostrar las salas marcadas
     //
-    index.conectConnection();
-    index.connection.query(query,function(err,rows,fields){
+    connection.connect() 
+    connection.query(query,function(err,rows,fields){
         if (err){
           console.log("error fatal")
           console.log(err)
@@ -105,7 +108,7 @@ function listarControles(horario) {
             })
       })
     })
-    index.closeConnection()
+    connection.end()
 }
 
 function dibujarSalas(){
