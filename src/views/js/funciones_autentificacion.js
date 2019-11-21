@@ -8,15 +8,14 @@ info_control=tarjeta;
 const form = document.querySelector('form')
 form.addEventListener('submit', e => {
   e.preventDefault();
-
-  const usuario = document.querySelector('#usuario').value;
   const contraseña = document.querySelector('#contraseña').value;
-  validarDocente(usuario,contraseña)
+  validarDocente(contraseña)
 });
 
 
-function validarDocente(usuario,contraseña){
-  let query = 'select DOC_MIESPE, DOC_CLAVE FROM docente WHERE DOC_CODIGO='+info_control.docente
+function validarDocente(contraseña){
+  let query = 'SELECT DOC_CLAVE FROM docente WHERE DOC_CODIGO='+info_control.docente
+  index.conectConnection()
   index.connection.query(query,function(err,rows,fields){
     if (err){
       console.log("error fatal")
@@ -25,7 +24,7 @@ function validarDocente(usuario,contraseña){
     }
     let docente=rows;
     let query2="";
-    if(docente[0].DOC_MIESPE==usuario && docente[0].DOC_CLAVE==contraseña){
+    if(docente[0].DOC_CLAVE==contraseña){
       if(info_control.accion=="ENTRAR"){
         query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora_actual+'" WHERE DOC_CODIGO='+info_control.docente
       }else{
@@ -42,7 +41,8 @@ function validarDocente(usuario,contraseña){
         window.close()
       })
     }else{
-      alert("Usuario o Clave incorrectos")
+      alert("Clave incorrectos")
     }
   })
+  index.closeConnection()
 }

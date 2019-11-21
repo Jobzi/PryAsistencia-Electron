@@ -20,11 +20,13 @@ const connection = mysql.createConnection({
   password:"sglab2019",
   database:"sg-lab2",
 }) 
-connection.connect(function(err){
-  if (err){
-    console.log(err.code)
-  }
-})
+exports.conectConnection = () =>{
+  connection.connect(function(err){
+    if (err){
+      console.log(err.code)
+    }
+  })
+}
 exports.connection=connection
 exports.closeConnection = () =>{
   connection.end(function(){})

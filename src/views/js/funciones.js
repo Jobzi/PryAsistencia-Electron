@@ -32,6 +32,7 @@ function listarControles(horario) {
     let indice_colores;
     //mostrar las salas marcadas
     //
+    index.conectConnection();
     index.connection.query(query,function(err,rows,fields){
         if (err){
           console.log("error fatal")
@@ -104,7 +105,7 @@ function listarControles(horario) {
             })
       })
     })
-    //index.closeConnection()
+    index.closeConnection()
 }
 
 function dibujarSalas(){
@@ -447,7 +448,7 @@ function crearVentanaAutentificar(docente,accion) {
   if(accion!="FINALIZADO"){
     new_auth_window = new index.BrowserWindow({
       width: 300,
-      height: 240,
+      height: 180,
       title: 'Autentificacion'
     });
     new_auth_window.setMenu(null);
