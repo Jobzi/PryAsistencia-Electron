@@ -5,6 +5,7 @@ const credenciales=index.bd_connection_info;
 const fecha=new Date();
 var horario_actual;
 var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
+var datos="";
 if(fecha.getHours()<10){
   var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 }
@@ -54,7 +55,6 @@ function listarControles(horario) {
                 indice_colores=1;
               }
               const controlesTemplate = `
-              <div id= ${control.LAB_ABREVIATURA}>
               <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5" style="max-width: 20rem;">
                   <div class="card-header">
                       <div class="row">
@@ -75,7 +75,6 @@ function listarControles(horario) {
                       </button>
                   </div>
                   </div>
-              </div>
               `;
               document.getElementById(control.LAB_ABREVIATURA).innerHTML = controlesTemplate;
               let btn=document.getElementById("boton"+control.LAB_ABREVIATURA)
@@ -209,7 +208,20 @@ function menubar(){
       label: 'Acerca de:',
       click() {
           alert("Sistema desarrollado por: \nDaniel Lopez rodridani439@gmail.com \nJipson Murillo jymurillo@espe.edu.ec");
+      },
+      label: 'DevTools',
+    submenu: [
+      {
+        label: 'Show/Hide Dev Tools',
+        accelerator: process.platform == 'darwin' ? 'Comand+D' : 'Ctrl+D',
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      },
+      {
+        role: 'reload'
       }
+    ]
     }, 
     
   ];
@@ -282,14 +294,45 @@ function mostrarLaboratorios(campus,sala){
           document.getElementById(lab.LAB_ABREVIATURA).style.display = mostrar
         })
       })
-    connection,end()
+    connection.end()
   }
 }
+
+function buscarCambios(){
+  const connection = mysql.createConnection(credenciales)
+  let query = 'select * FROM control WHERE CON_DIA="2015-01-07"'
+    connection.connect() 
+    connection.query(query,function(err,rows,fields){
+        if (err){
+          console.log("error fatal")
+          console.log(err)
+          return
+        }
+        datos="";
+        controles=rows;
+        controles.forEach(control => {
+          datos+=control.CON_CODIGO
+          datos+=control.CON_HORA_ENTRADA_R
+          datos+=control.CON_HORA_SALIDA_R
+        });
+        if(datos.localeCompare(document.getElementById("datos").innerHTML)!=0){
+          document.getElementById("datos").innerHTML = datos
+          datos=document.getElementById("datos").innerHTML
+          listarControles(horario_actual)
+        }
+    })
+    connection.end()
+    setTimeout("buscarCambios()",1000)
+  }
+
+
 
 function iniciar(){
     listarControles("");
     reloj();
     menubar();
+    buscarCambios();
+    
 }
 
 window.onload=iniciar;
