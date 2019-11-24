@@ -8,43 +8,42 @@
   </head>
   <body > 
     <div class="container">
-      <div class="row">
-        <div class="col-md-8" id="dia">
-          <h1></h1>
+        <div class="row">
+            <div class="col-md-2">
+              <h6> Campus Centro <input type="checkbox" onchange="mostrarLaboratorios(1,null)" id="CAMPUS-1" ></h6>
+            </div>
+            <div class="col-md-2">
+              <h6> Campus G.G.R.L <input type="checkbox" onchange="mostrarLaboratorios(2,null)" id="CAMPUS-2"></h6>
+            </div>
+            <div class="col-md-2">
+              <button onclick="seleccionarHora('07:00:00-09:00:00')">
+                7:00-9:00
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button onclick="seleccionarHora('09:30:00-11:30:00')">
+                9:30-11:30
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button onclick="seleccionarHora('12:00:00-14:00:00')">
+                12:00-14:00
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button onclick="seleccionarHora('14:00:00-16:00:00')">
+                14:00-16:00
+              </button>
+            </div>
         </div>
-        <div class="col-md-4">
-          <h1 id="liveclock" style="color:#0f0692";></h1>
+        <div class="row">
+          <div class="col-md-8" id="dia">
+            <h1></h1>
+          </div>
+          <div class="col-md-4">
+            <h1 id="liveclock" style="color:#0f0692";></h1>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-2">
-          <h6> SALA 01 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-SALA 01" ></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA 02 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-SALA 02"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA 03 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-SALA 03"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA 04 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-SALA 04"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA 05 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-SALA 05"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA 06 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-SALA 06"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA C1 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-COMPUTACIÓN I"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA C2 <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-COMPUTACIÓN II"></h6>
-        </div>
-        <div class="col-md-2">
-          <h6> SALA RE <input type="checkbox" onchange="mostrarLaboratorios(id)" id="C-REDES DE DATOS"></h6>
-        </div>
-      </div>
     </div>
     <hr>
     

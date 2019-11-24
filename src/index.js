@@ -8,16 +8,16 @@ exports.path=path;
 var mainWindow;
 
 const bd_connection_info={
-  /* host:"remotemysql.com",
+   host:"remotemysql.com",
    port:"3306",
-   user:"V4m8MKkMx1",
-   password:"qSE61lK4af",
-   database:"V4m8MKkMx1",*/
-   host:"10.2.0.3",
+   user:"ILq1OZnSWd",
+   password:"Qa5qZmykgU",
+   database:"ILq1OZnSWd",
+   /*host:"10.2.0.3",
    port:"3306",
    user:"sg-lab2",
    password:"sglab2019",
-   database:"sg-lab2",
+   database:"sg-lab2",*/
  }
 
 
