@@ -25,7 +25,7 @@ function listarControles(horario) {
     let string_fecha='2015-01-07'
     console.log(string_fecha)
     let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
-    let color_tarjeta=["light","danger","warning","success"];
+    let color_tarjeta=["light","info","success","secondary"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
     const connection = mysql.createConnection(credenciales)
@@ -58,16 +58,16 @@ function listarControles(horario) {
               <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5" style="max-width: 20rem;">
                   <div class="card-header">
                       <div class="row">
-                      <div class="col-md-2">
-                          <label  class="btn btn-primary">${control.LAB_ABREVIATURA}</label>
+                      <div class="col-md-3">
+                          <label class="btn btn-primary">${control.LAB_ABREVIATURA}</label>
                       </div>
                       <div class="col-md-8">
-                          <h5>${control.MAT_ABREVIATURA} </h5>
+                          <h5><b class="card-text" style="color:#fffb00";>${ocasional}</b>&nbsp ${control.MAT_ABREVIATURA} </h5>
                       </div>
                       </div>
                   </div>
                   <div class="card-body">
-                      <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} <a class="card-text" style="color:#fffb00";>${ocasional}</a> </h4>
+                      <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h4>
                   </div>
                   <div class="card-footer">
                       <button id=boton${control.LAB_ABREVIATURA} class="btn btn-${color_tarjeta[indice_colores]} btn-block">
@@ -141,37 +141,33 @@ function reloj(){
   } 
   if (!document.layers&&!document.all&&!document.getElementById)
     return
-    
      const Digital=new Date()
      var hours=Digital.getHours()
      var minutes=Digital.getMinutes()
      var seconds=Digital.getSeconds()
-    
-    var dn="PM"
+     var dn="PM"
     if (hours<12)
-    dn="AM"
+      dn="AM"
     if (hours>12)
-    hours=hours-12
+      hours=hours-12
     if (hours==0)
-    hours=12
-    
-     if (minutes<=9)
-     minutes="0"+minutes
-     if (seconds<=9)
-     seconds="0"+seconds
+      hours=12
+    if (minutes<=9)
+       minutes="0"+minutes
+    if (seconds<=9)
+       seconds="0"+seconds
     //change font size here to your desire
-    myclock=hours+":"+minutes+":"
-     +seconds+" "+dn+"</b></font>"
+    myclock=hours+":"+minutes+":"+seconds+" "+dn+"</b></font>"
     if (document.layers){
-    document.layers.liveclock.document.write(myclock)
-    document.layers.liveclock.document.close()
+      document.layers.liveclock.document.write(myclock)
+      document.layers.liveclock.document.close()
     }
     else if (document.all)
-    liveclock.innerHTML=myclock
+      liveclock.innerHTML=myclock
     else if (document.getElementById)
-    document.getElementById("liveclock").innerHTML=myclock
-    setTimeout("reloj()",1000)
-    }
+      document.getElementById("liveclock").innerHTML=myclock
+      setTimeout("reloj()",1000)
+}
 function saberDia(horario){
     let diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
     let dia_actual = diasSemana[fecha.getDay()];
