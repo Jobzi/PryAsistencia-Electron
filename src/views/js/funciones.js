@@ -7,7 +7,7 @@ var horario_actual;
 var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 var datos="";
 if(fecha.getHours()<10){
-  var hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
+   hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 }
 function listarControles(horario) {
     //saber hora para el selecet
@@ -15,14 +15,14 @@ function listarControles(horario) {
         horario=obtenerHoraLaboral();
     }
     if(horario!="No es Hora Laboral"){
-      dibujarSalas()
+      dibujarSalas();
     }
     horario_actual=horario;
-    saberDia(horario)
+    saberDia(horario);
     let hora=horario.split("-",1)
     //
-    //let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
-    let string_fecha='2015-01-07'
+    let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
+    //let string_fecha='2015-01-07'
     console.log(string_fecha)
     let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
     let color_tarjeta=["light","info","success","secondary"];
@@ -125,7 +125,6 @@ function dibujarSalas(){
           </div>  
           `
         })
-        salasTemplate+='</div>'
         document.getElementById("salas").innerHTML = salasTemplate
         salas.forEach(sala => {
           mostrarLaboratorios(sala.CAM_CODIGO,sala.LAB_ABREVIATURA)
@@ -146,7 +145,12 @@ function reloj(){
      var minutes=Digital.getMinutes()
      var seconds=Digital.getSeconds()
      var dn="PM"
-    if (hours<12)
+     if(hours<10){
+      hora_actual="0"+hours+":"+minutes+":"+seconds;
+    }else{
+      hora_actual=hours+":"+minutes+":"+seconds;
+    }
+     if (hours<12)
       dn="AM"
     if (hours>12)
       hours=hours-12
@@ -295,8 +299,9 @@ function mostrarLaboratorios(campus,sala){
 }
 
 function buscarCambios(){
+  let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
   const connection = mysql.createConnection(credenciales)
-  let query = 'select * FROM control WHERE CON_DIA="2015-01-07"'
+  let query = "select * FROM control WHERE CON_DIA='"+fecha+"'"
     connection.connect() 
     connection.query(query,function(err,rows,fields){
         if (err){
@@ -326,7 +331,7 @@ function buscarCambios(){
 function iniciar(){
     listarControles("");
     reloj();
-    menubar();
+    //menubar();
     buscarCambios();
     
 }
