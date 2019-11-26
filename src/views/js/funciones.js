@@ -4,11 +4,9 @@ const mysql = require("mysql");
 const credenciales=index.bd_connection_info;
 var fecha=new Date();
 var horario_actual;
-var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
+var hora_actual;
 var datos="";
-if(fecha.getHours()<10){
-   hora_actual="0"+fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
-}
+
 function listarControles(horario) {
     //saber hora para el selecet
     if (horario==""){        
@@ -16,6 +14,8 @@ function listarControles(horario) {
     }
     if(horario!="No es Hora Laboral"){
       dibujarSalas();
+    }else{
+      document.getElementById("salas").innerHTML = ""
     }
     horario_actual=horario;
     saberDia(horario);
@@ -143,9 +143,6 @@ function dibujarSalas(){
 
 function reloj(){
   fecha=new Date();
-  if(hora_actual=="06:45:00" || hora_actual=="09:16:00" || hora_actual=="11:46:00" || hora_actual=="13:46:00"){
-    listarControles(obtenerHoraLaboral())
-  } 
   if (!document.layers&&!document.all&&!document.getElementById)
     return
      const Digital=new Date()
@@ -154,9 +151,9 @@ function reloj(){
      var seconds=Digital.getSeconds()
      var dn="PM"
      if(hours<10){
-      hora_actual="0"+hours+":"+minutes+":"+seconds;
+      hora_actual="0"+hours;
     }else{
-      hora_actual=hours+":"+minutes+":"+seconds;
+      hora_actual=hours;
     }
      if (hours<12)
       dn="AM"
@@ -168,6 +165,11 @@ function reloj(){
        minutes="0"+minutes
     if (seconds<=9)
        seconds="0"+seconds
+    hora_actual+=":"+minutes+":"+seconds;
+    //cargar cuando cambie de hora
+    if(hora_actual=="07:00:00" || hora_actual=="09:30:00" || hora_actual=="12:00:00" || hora_actual=="14:00:00"){
+      listarControles(obtenerHoraLaboral())
+    } 
     //change font size here to your desire
     myclock=hours+":"+minutes+":"+seconds+" "+dn+"</b></font>"
     if (document.layers){
@@ -334,8 +336,8 @@ function buscarCambios(){
 
 
 function iniciar(){
-    listarControles("");
     reloj();
+    listarControles("");
     //menubar();
     buscarCambios();
     
