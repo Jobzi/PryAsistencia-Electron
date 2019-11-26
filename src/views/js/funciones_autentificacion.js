@@ -17,7 +17,7 @@ form.addEventListener('submit', e => {
 function validarDocente(contraseña){
   let query = 'SELECT DOC_CLAVE FROM docente WHERE DOC_CODIGO='+info_control.docente
   const credenciales=index.bd_connection_info;
-  const connection = mysql.createConnection(credenciales)
+  let connection = mysql.createConnection(credenciales)
   connection.connect()
   connection.query(query,function(err,rows,fields){
     if (err){
@@ -40,12 +40,12 @@ function validarDocente(contraseña){
           alert(err)
           return
         }
-        
+        connection.end()
         window.close()
       })
     }else{
       alert("Clave incorrectos")
     }
   })
-  //connection.end()
+
 }

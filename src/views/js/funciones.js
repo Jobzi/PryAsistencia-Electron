@@ -59,10 +59,11 @@ function listarControles(horario) {
                   <div class="card-header">
                       <div class="row">
                       <div class="col-md-3">
-                          <label class="btn btn-primary">${control.LAB_ABREVIATURA}</label>
+                          <label class="btn btn-primary"><h3>${control.LAB_ABREVIATURA}</h3></label>
+                          <font size=5><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
                       </div>
                       <div class="col-md-8">
-                          <h5><b class="card-text" style="color:#fffb00";>${ocasional}</b>&nbsp ${control.MAT_ABREVIATURA} </h5>
+                          <h3>&nbsp ${control.MAT_ABREVIATURA} </h3>
                       </div>
                       </div>
                   </div>
@@ -74,7 +75,7 @@ function listarControles(horario) {
                         ${accion_boton[indice_colores]}
                       </button>
                   </div>
-                  </div>
+              </div>
               `;
               document.getElementById(control.LAB_ABREVIATURA).innerHTML = controlesTemplate;
               let btn=document.getElementById("boton"+control.LAB_ABREVIATURA)
@@ -112,7 +113,7 @@ function dibujarSalas(){
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-2">
-                      <label  class="btn btn-primary">${sala.LAB_ABREVIATURA}</label>
+                      <label  class="btn btn-primary"><h3>${sala.LAB_ABREVIATURA}</h3></label>
                   </div>
                   <div class="col-md-8">
                     <h5></h5>
@@ -335,7 +336,7 @@ function buscarCambios(){
 function iniciar(){
     listarControles("");
     reloj();
-    menubar();
+    //menubar();
     buscarCambios();
     
 }
