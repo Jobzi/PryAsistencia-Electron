@@ -135,6 +135,7 @@ function dibujarSalas(){
 }
 
 function reloj(){
+  fecha=new Date();
   if(hora_actual=="07:00:00" || hora_actual=="09:30:00" || hora_actual=="12:00:00" || hora_actual=="14:00:00"){
     listarControles(obtenerHoraLaboral())
   } 
