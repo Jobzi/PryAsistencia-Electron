@@ -55,7 +55,7 @@ function listarControles(horario) {
                 indice_colores=1;
               }
               const controlesTemplate = `
-              <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5" style="max-width: 20rem;">
+              <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5">
                   <div class="card-header">
                       <div class="row">
                       <div class="col-md-3">
@@ -102,7 +102,7 @@ function dibujarSalas(){
         salas.forEach(sala => {
           salasTemplate+=`
           <div class="col-xs-4 p-2" id="${sala.LAB_ABREVIATURA}" style="display: none">
-            <div class="card  bg-light mb-5" style="max-width: 20rem;" >
+            <div class="card  bg-light mb-5"  >
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-2">
