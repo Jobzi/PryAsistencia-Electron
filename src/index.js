@@ -41,4 +41,5 @@ app.on('ready', () => {
   mainWindow.on('closed', () => {
     app.quit();
   });
+  exports.mainWindow=mainWindow
 });

@@ -2,7 +2,7 @@ const remote = require('electron').remote
 const index = remote.require('./index.js')
 const mysql = require("mysql");
 const credenciales=index.bd_connection_info;
-const fecha=new Date();
+var fecha=new Date();
 var horario_actual;
 var hora_actual=fecha.getHours()+":"+fecha.getMinutes()+":"+"00";
 var datos="";
@@ -249,6 +249,8 @@ function crearVentanaAutentificar(docente,accion) {
   };
   if(accion!="FINALIZADO"){
     new_auth_window = new index.BrowserWindow({
+      parent: index.mainWindow,
+      modal: true,
       width: 300,
       height: 180,
       title: 'Autentificacion'
@@ -302,7 +304,7 @@ function mostrarLaboratorios(campus,sala){
 function buscarCambios(){
   let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
   const connection = mysql.createConnection(credenciales)
-  let query = "select * FROM control WHERE CON_DIA='"+fecha+"'"
+  let query = "select * FROM control WHERE CON_DIA='"+string_fecha+"'"
     connection.connect() 
     connection.query(query,function(err,rows,fields){
         if (err){
@@ -332,7 +334,7 @@ function buscarCambios(){
 function iniciar(){
     listarControles("");
     reloj();
-    //menubar();
+    menubar();
     buscarCambios();
     
 }
