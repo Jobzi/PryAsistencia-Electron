@@ -33,7 +33,7 @@ function validarDocente(contraseña){
       }else{
         query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora_actual+'" WHERE DOC_CODIGO='+info_control.docente
       }
-      index.connection.query(query2,function(err,result){
+      connection.query(query2,function(err,result){
         if (err){
           console.log("error fatal")
           console.log(err)
@@ -47,5 +47,5 @@ function validarDocente(contraseña){
       alert("Clave incorrectos")
     }
   })
-  connection.end()
+  //connection.end()
 }

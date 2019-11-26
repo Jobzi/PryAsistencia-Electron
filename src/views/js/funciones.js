@@ -79,7 +79,13 @@ function listarControles(horario) {
               document.getElementById(control.LAB_ABREVIATURA).innerHTML = controlesTemplate;
               let btn=document.getElementById("boton"+control.LAB_ABREVIATURA)
               btn.addEventListener('click', e => {  
-                crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
+                let hora_valida=obtenerHoraLaboral()
+                hora_valida=hora_valida.split("-",2)
+                if(control.CON_HORA_ENTRADA<=hora_valida[0]){
+                  crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
+                }else{
+                  alert("No puede cambiar controles futuros")
+                }
               })
           }
       })
@@ -136,7 +142,7 @@ function dibujarSalas(){
 
 function reloj(){
   fecha=new Date();
-  if(hora_actual=="07:00:00" || hora_actual=="09:30:00" || hora_actual=="12:00:00" || hora_actual=="14:00:00"){
+  if(hora_actual=="06:45:00" || hora_actual=="09:16:00" || hora_actual=="11:46:00" || hora_actual=="13:46:00"){
     listarControles(obtenerHoraLaboral())
   } 
   if (!document.layers&&!document.all&&!document.getElementById)
@@ -234,11 +240,7 @@ function menubar(){
 }
 
 function seleccionarHora(opcion_hora){
-  if(hora_actual.valueOf()>=opcion_hora){
     listarControles(opcion_hora);
-  }else{
-    alert("No puede acceder a controles futuros");
-  }
 }
 
 function crearVentanaAutentificar(docente,accion) {
@@ -255,14 +257,13 @@ function crearVentanaAutentificar(docente,accion) {
       height: 180,
       title: 'Autentificacion'
     });
-    new_auth_window.setMenu(null);
+    //new_auth_window.setMenu(null);
     new_auth_window.loadURL(index.url.format({
       pathname: index.path.join(__dirname, '/autentificacion.html'),
       protocol: 'file',
       slashes: true
     }));
     new_auth_window.on('closed', () => {
-      listarControles(horario_actual)
       new_auth_window = null;
     });
     new_auth_window.webContents.on('did-finish-load', () => {
