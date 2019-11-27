@@ -59,7 +59,7 @@ function listarControles(horario) {
                   <div class="card-header">
                       <div class="row">
                       <div class="col-md-3">
-                          <label class="btn btn-primary"><h3>${control.LAB_ABREVIATURA}</h3></label>
+                          <label class="btn btn-primary"><h3><b>${control.LAB_ABREVIATURA}</b></h3></label>
                           <font size=5><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
                       </div>
                       <div class="col-md-8">
