@@ -60,16 +60,16 @@ function listarControles(horario) {
                   <div class="card-header">
                       <div class="row">
                       <div class="col-md-3">
-                          <label class="btn btn-primary"><h3><b>${control.LAB_ABREVIATURA}</b></h3></label>
-                          <font size=5><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
+                          <label class="btn btn-primary"><h1>${control.LAB_ABREVIATURA}</h1></label>
+                          <font size=3><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
                       </div>
                       <div class="col-md-8">
-                          <h3>&nbsp ${control.MAT_ABREVIATURA} </h3>
+                          <h2>&nbsp ${control.MAT_ABREVIATURA} </h2>
                       </div>
                       </div>
                   </div>
                   <div class="card-body">
-                      <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h4>
+                      <h3 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h3>
                   </div>
                   <div class="card-footer">
                       <button id=boton${control.LAB_ABREVIATURA} class="btn btn-${color_tarjeta[indice_colores]} btn-block">
@@ -381,16 +381,16 @@ function dibujarEspeciales(){
                     <div class="card-header">
                         <div class="row">
                         <div class="col-md-3">
-                            <label class="btn btn-primary"><h3>${control.LAB_ABREVIATURA}</h3></label>
-                            <font size=5><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
+                            <label class="btn btn-primary"><h1>${control.LAB_ABREVIATURA}</h1></label>
+                            <font size=3><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
                         </div>
                         <div class="col-md-8">
-                            <h3>&nbsp ${control.MAT_ABREVIATURA} </h3>
+                            <h2>&nbsp ${control.MAT_ABREVIATURA} </h2>
                         </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h4>
+                        <h3 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h3>
                     </div>
                     <div class="card-footer">
                         <button id="boton${control.LAB_ABREVIATURA+control.MAT_ABREVIATURA}" class="btn btn-${color_tarjeta[indice_colores]} btn-block">
@@ -421,7 +421,7 @@ function dibujarEspeciales(){
 function iniciar(){
     reloj();
     listarControles("");
-    menubar();
+    //menubar();
     buscarCambios();
     
 }
