@@ -90,8 +90,8 @@ function listarControles(horario) {
               })
           }
       })
+      connection.end()
     })
-    connection.end()
 }
 
 function dibujarSalas(){
@@ -326,19 +326,100 @@ function buscarCambios(){
         if(datos.localeCompare(document.getElementById("datos").innerHTML)!=0){
           document.getElementById("datos").innerHTML = datos
           datos=document.getElementById("datos").innerHTML
-          listarControles(horario_actual)
+          if(horario_actual!="ESPECIALES"){
+            listarControles(horario_actual)
+          }else{
+            dibujarEspeciales()
+          }
         }
     })
     connection.end()
     setTimeout("buscarCambios()",1000)
-  }
+}
 
-
+function dibujarEspeciales(){
+    saberDia("ESPECIALES")
+    horario_actual="ESPECIALES"
+    let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
+    let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
+    let color_tarjeta=["light","info","success","secondary"];
+    let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
+    let indice_colores;
+    const connection = mysql.createConnection(credenciales)
+    connection.connect() 
+    connection.query(query,function(err,rows,fields){
+        if (err){
+          console.log("error fatal")
+          console.log(err)
+          return
+        }
+        document.getElementById("salas").innerHTML=""
+        controles=rows;
+        controles.forEach(control => {
+          if(control.CON_HORA_ENTRADA!="07:00:00" && control.CON_HORA_ENTRADA!="09:30:00" && control.CON_HORA_ENTRADA!="12:00:00" && control.CON_HORA_ENTRADA!="14:00:00"){
+              if(control.LAB_ESTADO==1){
+                //Obtienedo si es ocacional
+                let ocasional="H";
+                if (control.CON_EXTRA==1){
+                    ocasional="O"
+                }
+                //Obteniendo el estado de control
+                if(control.CON_HORA_ENTRADA_R!=null){
+                  if(control.CON_HORA_SALIDA_R==null){
+                    indice_colores=2;
+                  }else{
+                    indice_colores=3
+                  }  
+                }else{
+                  indice_colores=1;
+                }
+                const controlesTemplate = `<div id= ${control.LAB_ABREVIATURA}>
+                <font size=5><b class="card-text" >${control.CON_HORA_ENTRADA}-${control.CON_HORA_SALIDA} </b></font>
+                <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5">
+                    <div class="card-header">
+                        <div class="row">
+                        <div class="col-md-3">
+                            <label class="btn btn-primary"><h3>${control.LAB_ABREVIATURA}</h3></label>
+                            <font size=5><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
+                        </div>
+                        <div class="col-md-8">
+                            <h3>&nbsp ${control.MAT_ABREVIATURA} </h3>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h4>
+                    </div>
+                    <div class="card-footer">
+                        <button id="boton${control.LAB_ABREVIATURA+control.MAT_ABREVIATURA}" class="btn btn-${color_tarjeta[indice_colores]} btn-block">
+                          ${accion_boton[indice_colores]}
+                        </button>
+                    </div>
+                </div>
+                </div>`;
+                document.getElementById("salas").innerHTML += controlesTemplate;
+                let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
+                btn.addEventListener('click', e => {
+                    if(control.CON_HORA_ENTRADA<=hora_actual){
+                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
+                    }else{
+                      alert("No puede cambiar controles futuros")
+                    }
+                  });
+                btn=null
+               
+            }
+          }
+        })
+        connection.end()
+      })
+      
+}
 
 function iniciar(){
     reloj();
     listarControles("");
-    //menubar();
+    menubar();
     buscarCambios();
     
 }
