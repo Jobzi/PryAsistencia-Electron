@@ -6,6 +6,7 @@ var fecha=new Date();
 var horario_actual;
 var hora_actual;
 var datos="";
+let string_fecha;
 
 function listarControles(horario) {
     //saber hora para el selecet
@@ -21,7 +22,7 @@ function listarControles(horario) {
     saberDia(horario);
     let hora=horario.split("-",1)
     //
-    let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
+    string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
     //let string_fecha='2015-01-07'
     console.log(string_fecha)
     let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
@@ -250,7 +251,8 @@ function crearVentanaAutentificar(docente,accion) {
   var tarjeta={
     docente: docente,
     accion: accion,
-    hora_actual: hora_actual
+    hora_actual: hora_actual,
+    fecha_actual: string_fecha
   };
   if(accion!="FINALIZADO"){
     new_auth_window = new index.BrowserWindow({
@@ -306,7 +308,7 @@ function mostrarLaboratorios(campus,sala){
 }
 
 function buscarCambios(){
-  let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
+  string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
   const connection = mysql.createConnection(credenciales)
   let query = "select * FROM control WHERE CON_DIA='"+string_fecha+"'"
     connection.connect() 
@@ -340,7 +342,7 @@ function buscarCambios(){
 function dibujarEspeciales(){
     saberDia("ESPECIALES")
     horario_actual="ESPECIALES"
-    let string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
+    string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
     let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
     let color_tarjeta=["light","info","success","secondary"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
