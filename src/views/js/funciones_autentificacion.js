@@ -29,10 +29,10 @@ function validarDocente(contraseña){
     let query2="";
     if(docente[0].DOC_CLAVE==contraseña){
       if(info_control.accion=="ENTRAR"){
-        query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora_actual+'" , control.CON_REG_FIRMA_ENTRADA="'+docente[0].DOC_MIESPE+'"  WHERE DOC_CODIGO='+info_control.docente+' and control.CON_DIA="'+info_control.fecha_actual+'"'
+        query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora_actual+'" , control.CON_REG_FIRMA_ENTRADA="'+docente[0].DOC_MIESPE+'"  WHERE CON_CODIGO='+info_control.codigo
       }else{
         if(info_control.accion=="SALIR"){
-          query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora_actual+'" , control.CON_REG_FIRMA_SALIDA="'+docente[0].DOC_MIESPE+'" WHERE DOC_CODIGO='+info_control.docente+'and control.CON_DIA="'+info_control.fecha_actual+'"'
+          query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora_actual+'" , control.CON_REG_FIRMA_SALIDA="'+docente[0].DOC_MIESPE+'" WHERE CON_CODIGO='+info_control.codigo
         }
       }
       connection.query(query2,function(err,result){

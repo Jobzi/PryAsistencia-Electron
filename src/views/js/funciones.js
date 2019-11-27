@@ -25,7 +25,7 @@ function listarControles(horario) {
     string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
     //let string_fecha='2015-01-07'
     console.log(string_fecha)
-    let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
+    let query = 'select control.CON_CODIGO,CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
     let color_tarjeta=["light","info","success","secondary"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
@@ -84,7 +84,7 @@ function listarControles(horario) {
                 let hora_valida=obtenerHoraLaboral()
                 hora_valida=hora_valida.split("-",2)
                 if(control.CON_HORA_ENTRADA<=hora_valida[0]){
-                  crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
+                  crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(), control.CON_CODIGO)
                 }else{
                   alert("No puede cambiar controles futuros")
                 }
@@ -247,12 +247,12 @@ function seleccionarHora(opcion_hora){
     listarControles(opcion_hora);
 }
 
-function crearVentanaAutentificar(docente,accion) {
+function crearVentanaAutentificar(docente,accion,codigo) {
   var tarjeta={
     docente: docente,
     accion: accion,
     hora_actual: hora_actual,
-    fecha_actual: string_fecha
+    codigo: codigo
   };
   if(accion!="FINALIZADO"){
     new_auth_window = new index.BrowserWindow({
@@ -343,7 +343,7 @@ function dibujarEspeciales(){
     saberDia("ESPECIALES")
     horario_actual="ESPECIALES"
     string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
-    let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
+    let query = 'select control.CON_CODIGO,CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
     let color_tarjeta=["light","info","success","secondary"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
@@ -403,7 +403,7 @@ function dibujarEspeciales(){
                 let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
                 btn.addEventListener('click', e => {
                     if(control.CON_HORA_ENTRADA<=hora_actual){
-                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
+                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(),control.CON_CODIGO)
                     }else{
                       alert("No puede cambiar controles futuros")
                     }
@@ -421,7 +421,7 @@ function dibujarEspeciales(){
 function iniciar(){
     reloj();
     listarControles("");
-    //menubar();
+    menubar();
     buscarCambios();
     
 }
