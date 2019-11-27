@@ -15,7 +15,7 @@ form.addEventListener('submit', e => {
 
 
 function validarDocente(contraseña){
-  let query = 'SELECT DOC_CLAVE FROM docente WHERE DOC_CODIGO='+info_control.docente
+  let query = 'SELECT DOC_CLAVE, DOC_MIESPE FROM docente WHERE DOC_CODIGO='+info_control.docente
   const credenciales=index.bd_connection_info;
   let connection = mysql.createConnection(credenciales)
   connection.connect()
@@ -29,9 +29,11 @@ function validarDocente(contraseña){
     let query2="";
     if(docente[0].DOC_CLAVE==contraseña){
       if(info_control.accion=="ENTRAR"){
-        query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora_actual+'" WHERE DOC_CODIGO='+info_control.docente
+        query2='UPDATE control SET control.CON_HORA_ENTRADA_R = "'+info_control.hora_actual+'" , control.CON_REG_FIRMA_ENTRADA="'+docente.DOC_MIESPE+'"    WHERE DOC_CODIGO='+info_control.docente
       }else{
-        query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora_actual+'" WHERE DOC_CODIGO='+info_control.docente
+        if(info_control.accion=="SALIR"){
+          query2='UPDATE control SET control.CON_HORA_SALIDA_R = "'+info_control.hora_actual+'" , control.CON_REG_FIRMA_SALIDA="'+docente.DOC_MIESPE+'" WHERE DOC_CODIGO='+info_control.docente
+        }
       }
       connection.query(query2,function(err,result){
         if (err){
@@ -44,7 +46,7 @@ function validarDocente(contraseña){
         window.close()
       })
     }else{
-      alert("Clave incorrectos")
+      alert("Clave incorrecta")
     }
   })
 
