@@ -13,11 +13,6 @@ function listarControles(horario) {
     if (horario==""){        
         horario=obtenerHoraLaboral();
     }
-    if(horario!="No es Hora Laboral"){
-      dibujarSalas();
-    }else{
-      document.getElementById("salas").innerHTML = ""
-    }
     horario_actual=horario;
     saberDia(horario);
     let hora=horario.split("-",1)
@@ -25,74 +20,79 @@ function listarControles(horario) {
     string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
     //let string_fecha='2015-01-07'
     console.log(string_fecha)
-    let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
-    let color_tarjeta=["light","info","success","secondary"];
-    let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
-    let indice_colores;
-    const connection = mysql.createConnection(credenciales)
-    connection.connect() 
-    connection.query(query,function(err,rows,fields){
-        if (err){
-          console.log("error fatal")
-          console.log(err)
-          return
-        }
-        controles=rows;
-        controles.forEach(control => {
-            if(control.LAB_ESTADO==1){
-              //Obtienedo si es ocacional
-              let ocasional="H";
-              if (control.CON_EXTRA==1){
-                  ocasional="O"
-              }
-              //Obteniendo el estado de control
-              if(control.CON_HORA_ENTRADA_R!=null){
-                if(control.CON_HORA_SALIDA_R==null){
-                  indice_colores=2;
-                }else{
-                  indice_colores=3
-                }  
-              }else{
-                indice_colores=1;
-              }
-              const controlesTemplate = `
-              <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5">
-                  <div class="card-header">
-                      <div class="row">
-                      <div class="col-md-3">
-                          <label class="btn btn-primary"><h1>${control.LAB_ABREVIATURA}</h1></label>
-                          <font size=3><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
-                      </div>
-                      <div class="col-md-8">
-                          <h2>&nbsp ${control.MAT_ABREVIATURA} </h2>
-                      </div>
-                      </div>
-                  </div>
-                  <div class="card-body">
-                      <h3 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h3>
-                  </div>
-                  <div class="card-footer">
-                      <button id=boton${control.LAB_ABREVIATURA} class="btn btn-${color_tarjeta[indice_colores]} btn-block">
-                        ${accion_boton[indice_colores]}
-                      </button>
-                  </div>
-              </div>
-              `;
-              document.getElementById(control.LAB_ABREVIATURA).innerHTML = controlesTemplate;
-              let btn=document.getElementById("boton"+control.LAB_ABREVIATURA)
-              btn.addEventListener('click', e => {  
-                let hora_valida=obtenerHoraLaboral()
-                hora_valida=hora_valida.split("-",2)
-                if(control.CON_HORA_ENTRADA<=hora_valida[0]){
-                  crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
-                }else{
-                  alert("No puede cambiar controles futuros")
-                }
-              })
+    if(horario!="No es Hora Laboral"){
+      dibujarSalas();
+      let query = 'select control.CON_CODIGO,CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and control.CON_HORA_ENTRADA='+'"'+hora+'"'
+      let color_tarjeta=["light","info","success","secondary"];
+      let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
+      let indice_colores;
+      const connection = mysql.createConnection(credenciales)
+      connection.connect() 
+      connection.query(query,function(err,rows,fields){
+          if (err){
+            console.log("error fatal")
+            console.log(err)
+            return
           }
+          controles=rows;
+          controles.forEach(control => {
+              if(control.LAB_ESTADO==1){
+                //Obtienedo si es ocacional
+                let ocasional="H";
+                if (control.CON_EXTRA==1){
+                    ocasional="O"
+                }
+                //Obteniendo el estado de control
+                if(control.CON_HORA_ENTRADA_R!=null){
+                  if(control.CON_HORA_SALIDA_R==null){
+                    indice_colores=2;
+                  }else{
+                    indice_colores=3
+                  }  
+                }else{
+                  indice_colores=1;
+                }
+                const controlesTemplate = `
+                <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5">
+                    <div class="card-header">
+                        <div class="row">
+                        <div class="col-md-3">
+                            <label class="btn btn-primary"><h1>${control.LAB_ABREVIATURA}</h1></label>
+                            <font size=3><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
+                        </div>
+                        <div class="col-md-8">
+                            <h2>&nbsp ${control.MAT_ABREVIATURA} </h2>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${control.DOC_TITULO} ${control.DOC_APELLIDOS} ${control.DOC_NOMBRES} </h3>
+                    </div>
+                    <div class="card-footer">
+                        <button id=boton${control.LAB_ABREVIATURA} class="btn btn-${color_tarjeta[indice_colores]} btn-block">
+                          ${accion_boton[indice_colores]}
+                        </button>
+                    </div>
+                </div>
+                `;
+                document.getElementById(control.LAB_ABREVIATURA).innerHTML = controlesTemplate;
+                let btn=document.getElementById("boton"+control.LAB_ABREVIATURA)
+                btn.addEventListener('click', e => {  
+                  let hora_valida=obtenerHoraLaboral()
+                  hora_valida=hora_valida.split("-",2)
+                  if(control.CON_HORA_ENTRADA<=hora_valida[0]){
+                    crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(), control.CON_CODIGO)
+                  }else{
+                    alert("No puede cambiar controles futuros")
+                  }
+                })
+            }
+        })
+        connection.end()
       })
-      connection.end()
-    })
+    }else{
+      document.getElementById("salas").innerHTML = ""
+    }  
 }
 
 function dibujarSalas(){
@@ -247,12 +247,12 @@ function seleccionarHora(opcion_hora){
     listarControles(opcion_hora);
 }
 
-function crearVentanaAutentificar(docente,accion) {
+function crearVentanaAutentificar(docente,accion,codigo) {
   var tarjeta={
     docente: docente,
     accion: accion,
     hora_actual: hora_actual,
-    fecha_actual: string_fecha
+    codigo: codigo
   };
   if(accion!="FINALIZADO"){
     new_auth_window = new index.BrowserWindow({
@@ -343,7 +343,7 @@ function dibujarEspeciales(){
     saberDia("ESPECIALES")
     horario_actual="ESPECIALES"
     string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
-    let query = 'select CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
+    let query = 'select control.CON_CODIGO,CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
     let color_tarjeta=["light","info","success","secondary"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
@@ -403,12 +403,11 @@ function dibujarEspeciales(){
                 let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
                 btn.addEventListener('click', e => {
                     if(control.CON_HORA_ENTRADA<=hora_actual){
-                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim())
+                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(),control.CON_CODIGO)
                     }else{
                       alert("No puede cambiar controles futuros")
                     }
                   });
-                btn=null
                
             }
           }
@@ -421,7 +420,7 @@ function dibujarEspeciales(){
 function iniciar(){
     reloj();
     listarControles("");
-    //menubar();
+    menubar();
     buscarCambios();
     
 }
