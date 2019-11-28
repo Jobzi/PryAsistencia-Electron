@@ -114,7 +114,7 @@ function dibujarSalas(){
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-2">
-                      <label  class="btn btn-primary"><h3>${sala.LAB_ABREVIATURA}</h3></label>
+                      <label  class="btn btn-primary"><h1>${sala.LAB_ABREVIATURA}</h1></label>
                   </div>
                   <div class="col-md-8">
                     <h5></h5>
