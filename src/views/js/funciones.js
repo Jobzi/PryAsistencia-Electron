@@ -61,7 +61,7 @@ function listarControles(horario) {
                             <font size=3><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
                         </div>
                         <div class="col-md-8">
-                            <h2>&nbsp ${control.MAT_ABREVIATURA} </h2>
+                            <h2>${control.MAT_ABREVIATURA} </h2>
                         </div>
                         </div>
                     </div>
@@ -385,7 +385,7 @@ function dibujarEspeciales(){
                             <font size=3><b class="card-text" style="color:#fffb00";>${ocasional}</b></font>
                         </div>
                         <div class="col-md-8">
-                            <h2>&nbsp ${control.MAT_ABREVIATURA} </h2>
+                            <h2>${control.MAT_ABREVIATURA} </h2>
                         </div>
                         </div>
                     </div>
