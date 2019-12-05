@@ -416,29 +416,35 @@ function dibujarEspeciales(){
                     </div>
                 </div>
                 </div>`;
-                document.getElementById("salas").innerHTML += controlesTemplate;
-                let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
-                btn.addEventListener('click', e => {
-                  let minutos=parseInt(control.CON_HORA_ENTRADA.split(":",3)[1],10)-15
-                  let hora=parseInt(control.CON_HORA_ENTRADA.split(":",3)[0],10);
-                  if(minutos<0){
-                    hora=hora-1;
-                    minutos=60+minutos;
+                document.getElementById("salas").innerHTML += controlesTemplate;  
+            }
+          }
+        })
+        controles=rows;
+        controles.forEach(control => {
+          if(control.CON_HORA_ENTRADA!="07:00:00" && control.CON_HORA_ENTRADA!="09:30:00" && control.CON_HORA_ENTRADA!="12:00:00" && control.CON_HORA_ENTRADA!="14:00:00"){
+            if(control.LAB_ESTADO==1){
+              let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
+              btn.addEventListener('click', e => {
+                let minutos=parseInt(control.CON_HORA_ENTRADA.split(":",3)[1],10)-15
+                let hora=parseInt(control.CON_HORA_ENTRADA.split(":",3)[0],10);
+                if(minutos<0){
+                  hora=hora-1;
+                  minutos=60+minutos;
+                }
+                if(minutos<10){
+                  minutos="0"+minutos
+                }
+                let hora_entrada=hora+":"+minutos+":00";
+                if(hora<10){
+                hora_entrada ="0"+hora+":"+minutos+":00"
+                }
+                  if(hora_entrada<=hora_actual){
+                    crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(),control.CON_CODIGO)
+                  }else{
+                    alert("No puede cambiar controles futuros")
                   }
-                  if(minutos<10){
-                    minutos="0"+minutos
-                  }
-                  let hora_entrada=hora+":"+minutos+":00";
-                  if(hora<10){
-                   hora_entrada ="0"+hora+":"+minutos+":00"
-                  }
-                    if(hora_entrada<=hora_actual){
-                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(),control.CON_CODIGO)
-                    }else{
-                      alert("No puede cambiar controles futuros")
-                    }
-                  });
-               
+                });
             }
           }
         })
