@@ -392,7 +392,7 @@ function dibujarEspeciales(){
                 }else{
                   indice_colores=1;
                 }
-                const controlesTemplate = `<div id= ${control.LAB_ABREVIATURA}>
+                const controlesTemplate = `<div id= ${control.LAB_ABREVIATURA} class='p-2'>
                 <font size=5><b class="card-text" >${control.CON_HORA_ENTRADA}-${control.CON_HORA_SALIDA} </b></font>
                 <div class="card text-white bg-${color_tarjeta[indice_colores]} mb-5">
                     <div class="card-header">
@@ -415,6 +415,7 @@ function dibujarEspeciales(){
                         </button>
                     </div>
                 </div>
+               
                 </div>`;
                 document.getElementById("salas").innerHTML += controlesTemplate;  
             }
@@ -456,7 +457,7 @@ function dibujarEspeciales(){
 function iniciar(){
     reloj();
     listarControles("");
-    //menubar();
+    menubar();
     buscarCambios();
     
 }
