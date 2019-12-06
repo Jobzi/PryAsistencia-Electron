@@ -13,7 +13,7 @@ const bd_connection_info={
    user:"ILq1OZnSWd",
    password:"Qa5qZmykgU",
    database:"ILq1OZnSWd",
-  /*host:"10.2.0.3",
+   /*host:"10.2.0.3",
    port:"3306",
    user:"sg-lab2",
    password:"sglab2019",
