@@ -7,8 +7,11 @@ var horario_actual;
 var hora_actual;
 var datos="";
 let string_fecha;
+let campus_activo=0;
+let activo_especiales=0;
 
 function listarControles(horario) {
+    activo_especiales=0;
     //saber hora para el selecet
     if (horario==""){        
         horario=obtenerHoraLaboral();
@@ -282,32 +285,42 @@ function crearVentanaAutentificar(docente,accion,codigo) {
 }
 
 function mostrarLaboratorios(campus,sala){
-  var mostrar=""
+  let mostrar ="block"
+  if( document.getElementById("CAMPUS-"+campus).checked==true){
+    campus_activo=campus;
+    if(campus==1){
+      document.getElementById("CAMPUS-2").checked = false;
+    }else
+      document.getElementById("CAMPUS-1").checked = false;
+  }
   if( document.getElementById("CAMPUS-"+campus).checked==false){
     mostrar="none"
   }
-  if( document.getElementById("CAMPUS-"+campus).checked==true){
-    mostrar="block"
-  }
-  if(sala!=null){
-    document.getElementById(sala).style.display = mostrar
-  }else{
-    const connection = mysql.createConnection(credenciales)
-    let query = 'select LAB_ABREVIATURA FROM laboratorio WHERE LAB_ESTADO=1 AND CAM_CODIGO='+campus
-    connection.connect() 
-    connection.query(query,function(err,rows,fields){
-        if (err){
-          console.log("error fatal")
-          console.log(err)
-          return
-        }
-        let salas=rows;
-        salas.forEach(lab => {
-          document.getElementById(lab.LAB_ABREVIATURA).style.display = mostrar
+  if(activo_especiales==0){
+    if(sala!=null){
+      document.getElementById(sala).style.display = mostrar
+    }else{
+      const connection = mysql.createConnection(credenciales)
+      let query = 'select LAB_ABREVIATURA, CAM_CODIGO FROM laboratorio WHERE LAB_ESTADO=1'
+      connection.connect() 
+      connection.query(query,function(err,rows,fields){
+          if (err){
+            console.log("error fatal")
+            console.log(err)
+            return
+          }
+          let salas=rows;
+          salas.forEach(lab => {
+            if(lab.CAM_CODIGO==campus)
+              document.getElementById(lab.LAB_ABREVIATURA).style.display = "block"
+            else
+              document.getElementById(lab.LAB_ABREVIATURA).style.display = "none"
+          })
+          connection.end()
         })
-      })
-    connection.end()
-  }
+    }
+  }else
+    dibujarEspeciales();
 }
 
 function buscarCambios(){
@@ -343,10 +356,11 @@ function buscarCambios(){
 }
 
 function dibujarEspeciales(){
+    activo_especiales=1;
     saberDia("ESPECIALES")
     horario_actual="ESPECIALES"
     string_fecha=fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate();
-    let query = 'select control.CON_CODIGO,CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'"';
+    let query = 'select control.CON_CODIGO,CON_DIA,MAT_ABREVIATURA,control.DOC_CODIGO,DOC_NOMBRES,DOC_APELLIDOS,DOC_TITULO,CON_EXTRA,LAB_ABREVIATURA,LAB_ESTADO,control.CON_HORA_ENTRADA,control.CON_HORA_SALIDA,control.CON_HORA_ENTRADA_R,control.CON_HORA_SALIDA_R FROM control,materia,docente,laboratorio WHERE control.MAT_CODIGO=materia.MAT_CODIGO and control.DOC_CODIGO=docente.DOC_CODIGO and control.LAB_CODIGO=laboratorio.LAB_CODIGO and control.CON_DIA="'+string_fecha+'" and laboratorio.CAM_CODIGO='+campus_activo;
     let color_tarjeta=["light","info","success","secondary"];
     let accion_boton=["DISPONIBLE","ENTRAR","SALIR","FINALIZADO"]
     let indice_colores;
@@ -402,30 +416,35 @@ function dibujarEspeciales(){
                     </div>
                 </div>
                 </div>`;
-                document.getElementById("salas").innerHTML += controlesTemplate;
-                let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
-                btn.addEventListener('click', e => {
-                  let minutos=parseInt(control.CON_HORA_ENTRADA.split(":",3)[1],10)-15
-                  let hora=parseInt(control.CON_HORA_ENTRADA.split(":",3)[0],10);
-                  if(minutos<0){
-                    hora=hora-1;
-                    minutos=60+minutos;
+                document.getElementById("salas").innerHTML += controlesTemplate;  
+            }
+          }
+        })
+        controles=rows;
+        controles.forEach(control => {
+          if(control.CON_HORA_ENTRADA!="07:00:00" && control.CON_HORA_ENTRADA!="09:30:00" && control.CON_HORA_ENTRADA!="12:00:00" && control.CON_HORA_ENTRADA!="14:00:00"){
+            if(control.LAB_ESTADO==1){
+              let btn = document.getElementById("boton"+control.LAB_ABREVIATURA+control.MAT_ABREVIATURA);
+              btn.addEventListener('click', e => {
+                let minutos=parseInt(control.CON_HORA_ENTRADA.split(":",3)[1],10)-15
+                let hora=parseInt(control.CON_HORA_ENTRADA.split(":",3)[0],10);
+                if(minutos<0){
+                  hora=hora-1;
+                  minutos=60+minutos;
+                }
+                if(minutos<10){
+                  minutos="0"+minutos
+                }
+                let hora_entrada=hora+":"+minutos+":00";
+                if(hora<10){
+                hora_entrada ="0"+hora+":"+minutos+":00"
+                }
+                  if(hora_entrada<=hora_actual){
+                    crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(),control.CON_CODIGO)
+                  }else{
+                    alert("No puede cambiar controles futuros")
                   }
-                  if(minutos<10){
-                    minutos="0"+minutos
-                  }
-                  let hora_entrada=hora+":"+minutos+":00";
-                  if(hora<10){
-                   hora_entrada ="0"+hora+":"+minutos+":00"
-                  }
-                  alert(hora_entrada)
-                    if(hora_entrada<=hora_actual){
-                      crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(),control.CON_CODIGO)
-                    }else{
-                      alert("No puede cambiar controles futuros")
-                    }
-                  });
-               
+                });
             }
           }
         })
