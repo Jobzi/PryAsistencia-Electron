@@ -84,7 +84,7 @@ function listarControles(horario) {
                   let hora_valida=obtenerHoraLaboral()
                   hora_valida=hora_valida.split("-",2)
                   if(hora_actual>="13:45:00"){
-                    hora_valida="14:00:00"
+                    hora_valida[0]="14:00:00"
                   }
                   if(control.CON_HORA_ENTRADA<=hora_valida[0]){
                     crearVentanaAutentificar(control.DOC_CODIGO, (btn.textContent).trim(), control.CON_CODIGO)
