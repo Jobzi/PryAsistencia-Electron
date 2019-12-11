@@ -457,7 +457,7 @@ function dibujarEspeciales(){
 function iniciar(){
     reloj();
     listarControles("");
-    menubar();
+    //menubar();
     buscarCambios();
     
 }
